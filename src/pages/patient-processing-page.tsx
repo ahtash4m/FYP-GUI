@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { uploadScan } from "@/features/scans/scans.api"
 import { useMutation } from "@tanstack/react-query"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 
@@ -15,17 +15,21 @@ export function PatientProcessingPage() {
 
   const [statusLine, setStatusLine] = useState("Preparing image…")
   const [progress, setProgress] = useState(10)
+  
+  // FIX: Use state for the URL instead of useMemo
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
-  const previewUrl = useMemo(() => {
-    if (!file) return null
-    return URL.createObjectURL(file)
-  }, [file])
-
+  // FIX: Properly handle the creation and destruction of the URL in one effect
   useEffect(() => {
+    if (!file) return
+
+    const objectUrl = URL.createObjectURL(file)
+    setPreviewUrl(objectUrl)
+
     return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl)
+      URL.revokeObjectURL(objectUrl)
     }
-  }, [previewUrl])
+  }, [file])
 
   const { mutate, isPending } = useMutation({
     mutationFn: (f: File) => uploadScan(f),
@@ -81,16 +85,26 @@ export function PatientProcessingPage() {
     <div className="mx-auto flex max-w-xl flex-col items-center gap-6 py-4">
       <Card className="w-full overflow-hidden">
         <CardContent className="space-y-6 p-6">
-          <div className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-xl border bg-muted">
+          
+          {/* THE UPDATED IMAGE PROCESSING CONTAINER */}
+          <div className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-xl border-2 border-muted bg-slate-100">
+            {/* The base image with data-analysis styling */}
             <img
               src={previewUrl}
-              alt="Processing"
-              className="h-full w-full object-cover"
+              alt="Processing Scan"
+              className="h-full w-full object-cover grayscale blur-[2px] opacity-70"
             />
+            
+            {/* The AI scanning overlay effect */}
+            <div className="absolute inset-0 bg-teal-500/20 animate-pulse mix-blend-overlay"></div>
+            
+            {/* Keep the central bounding box focus ring you already had */}
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
               <div className="h-40 w-40 rounded-lg border-2 border-primary/80 shadow-[0_0_0_9999px_rgba(15,118,110,0.12)]" />
             </div>
           </div>
+          {/* END OF UPDATED CONTAINER */}
+
           <div className="space-y-2 text-center text-sm text-muted-foreground">
             <p>{statusLine}</p>
             <p className="text-xs">This animation is cosmetic; real timing depends on the Flask + GPU backend.</p>
