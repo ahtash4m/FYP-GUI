@@ -7,7 +7,7 @@ function delay(ms: number) {
 }
 
 /**
- * POST /api/auth/login — replace body shape when Flask contract is fixed.
+ * POST /api/auth/login
  */
 export async function login(
   email: string,
@@ -26,7 +26,14 @@ export async function login(
       role,
     }
   }
-  return postJson<AuthUser>("/api/auth/login", { email, password })
+  
+  const data = await postJson<{ user: AuthUser; token: string }>("/api/auth/login", { 
+    email, 
+    password 
+  })
+  
+  localStorage.setItem("acne_jwt_token", data.token)
+  return data.user
 }
 
 /** POST /api/auth/register */
@@ -44,18 +51,29 @@ export async function register(
       role: "patient",
     }
   }
-  return postJson<AuthUser>("/api/auth/register", {
+  
+  const data = await postJson<{ user: AuthUser; token: string }>("/api/auth/register", {
     email,
     password,
     display_name: displayName,
   })
+  
+  localStorage.setItem("acne_jwt_token", data.token)
+  return data.user
 }
 
-/** POST /api/auth/logout — optional until backend supports sessions. */
+/** POST /api/auth/logout */
 export async function logout(): Promise<void> {
   if (useMockApi()) {
     await delay(150)
     return
   }
-  await postJson("/api/auth/logout", {})
+  
+  try {
+    await postJson("/api/auth/logout", {})
+  } catch (error) {
+    // Ignore backend errors on logout, just ensure local token is cleared
+  } finally {
+    localStorage.removeItem("acne_jwt_token")
+  }
 }

@@ -1,3 +1,4 @@
+import imageCompression from "browser-image-compression"
 import { getJson, postFormData } from "@/lib/api/client"
 import { useMockApi } from "@/lib/api/config"
 import {
@@ -11,7 +12,7 @@ function delay(ms: number) {
 }
 
 /**
- * POST /api/scans — multipart field name must match Flask (e.g. "image").
+ * POST /api/scans — Compresses image client-side, then uploads.
  */
 export async function uploadScan(file: File): Promise<ScanResult> {
   if (useMockApi()) {
@@ -21,8 +22,25 @@ export async function uploadScan(file: File): Promise<ScanResult> {
       imageUrl: URL.createObjectURL(file),
     })
   }
+
+  // 1. Compress the image before sending it to Flask
+  const options = {
+    maxSizeMB: 1,             // Maximum file size in MB
+    maxWidthOrHeight: 1024,   // Resize large images
+    useWebWorker: true,
+  }
+  
+  let fileToUpload = file;
+  try {
+    fileToUpload = await imageCompression(file, options);
+  } catch (error) {
+    console.error("Image compression failed, falling back to original:", error);
+  }
+
+  // 2. Prepare FormData with the compressed file
   const fd = new FormData()
-  fd.append("image", file)
+  fd.append("image", fileToUpload, file.name)
+  
   return postFormData<ScanResult>("/api/scans", fd)
 }
 

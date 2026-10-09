@@ -25,12 +25,26 @@ async function parseJsonSafe(res: Response): Promise<unknown> {
 }
 
 /**
- * Low-level JSON GET. Replace or extend when adding auth headers / refresh tokens.
+ * Helper to retrieve the JWT token and format the Authorization header.
+ */
+function getAuthHeader(): Record<string, string> {
+  const token = localStorage.getItem("acne_jwt_token")
+  if (token) {
+    return { Authorization: `Bearer ${token}` }
+  }
+  return {}
+}
+
+/**
+ * Low-level JSON GET.
  */
 export async function getJson<T>(path: string): Promise<T> {
   const res = await fetch(apiUrl(path), {
     method: "GET",
-    headers: { Accept: "application/json" },
+    headers: { 
+      Accept: "application/json",
+      ...getAuthHeader()
+    },
     credentials: "include",
   })
   const body = await parseJsonSafe(res)
@@ -46,6 +60,7 @@ export async function postJson<T>(path: string, data: Json): Promise<T> {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      ...getAuthHeader()
     },
     credentials: "include",
     body: JSON.stringify(data),
@@ -63,6 +78,7 @@ export async function patchJson<T>(path: string, data: Json): Promise<T> {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      ...getAuthHeader()
     },
     credentials: "include",
     body: JSON.stringify(data),
@@ -77,7 +93,10 @@ export async function patchJson<T>(path: string, data: Json): Promise<T> {
 export async function deleteJson<T>(path: string): Promise<T | void> {
   const res = await fetch(apiUrl(path), {
     method: "DELETE",
-    headers: { Accept: "application/json" },
+    headers: { 
+      Accept: "application/json",
+      ...getAuthHeader()
+    },
     credentials: "include",
   })
   const body = await parseJsonSafe(res)
@@ -93,6 +112,9 @@ export async function deleteJson<T>(path: string): Promise<T | void> {
 export async function postFormData<T>(path: string, form: FormData): Promise<T> {
   const res = await fetch(apiUrl(path), {
     method: "POST",
+    headers: {
+      ...getAuthHeader()
+    },
     body: form,
     credentials: "include",
   })
