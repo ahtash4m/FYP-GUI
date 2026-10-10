@@ -46,9 +46,7 @@ export function AdminOverviewPage() {
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Admin Overview</h1>
         <p className="text-sm text-muted-foreground">
-          Backed by{" "}
-          <code className="rounded bg-muted px-1">/api/admin/stats</code> and related
-          endpoints when integrated.
+          Live system metrics, disease distribution, and triage activity.
         </p>
       </div>
 
@@ -79,7 +77,7 @@ export function AdminOverviewPage() {
           <CardContent>
             <div className="text-3xl font-bold">{s?.pendingReviews ?? "—"}</div>
             <p className="mt-1 text-xs text-muted-foreground">
-              Placeholder metric — define workflow or hide if unused.
+              Scans with confidence below threshold.
             </p>
           </CardContent>
         </Card>
@@ -109,7 +107,7 @@ export function AdminOverviewPage() {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={types.data}>
                 <XAxis dataKey="type" tick={{ fontSize: 12 }} />
-                <YAxis tick={{ fontSize: 12 }} domain={[0, 500]} />
+                <YAxis tick={{ fontSize: 12 }} allowDecimals={false} />
                 <Tooltip />
                 <Bar dataKey="count" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
               </BarChart>

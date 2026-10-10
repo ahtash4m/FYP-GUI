@@ -12,8 +12,6 @@ export class ApiError extends Error {
   }
 }
 
-type Json = Record<string, unknown> | unknown[] | string | number | boolean | null
-
 async function parseJsonSafe(res: Response): Promise<unknown> {
   const text = await res.text()
   if (!text) return null
@@ -54,7 +52,7 @@ export async function getJson<T>(path: string): Promise<T> {
   return body as T
 }
 
-export async function postJson<T>(path: string, data: Json): Promise<T> {
+export async function postJson<T>(path: string, data: unknown): Promise<T> {
   const res = await fetch(apiUrl(path), {
     method: "POST",
     headers: {
@@ -72,7 +70,7 @@ export async function postJson<T>(path: string, data: Json): Promise<T> {
   return body as T
 }
 
-export async function patchJson<T>(path: string, data: Json): Promise<T> {
+export async function patchJson<T>(path: string, data: unknown): Promise<T> {
   const res = await fetch(apiUrl(path), {
     method: "PATCH",
     headers: {

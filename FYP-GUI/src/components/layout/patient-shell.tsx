@@ -2,7 +2,6 @@ import { Brand } from "@/components/layout/brand"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
 import { useAuth } from "@/providers/auth-provider"
 import {
   CircleHelp,

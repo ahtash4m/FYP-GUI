@@ -36,7 +36,7 @@ export function AdminUsersPage() {
     mutationFn: deleteAdminUser,
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: ["admin", "users"] })
-      toast.success("User deleted (mock)")
+      toast.success("User deleted successfully")
     },
     onError: (e) =>
       toast.error(e instanceof Error ? e.message : "Delete failed"),
@@ -48,7 +48,7 @@ export function AdminUsersPage() {
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">User Management</h1>
           <p className="text-sm text-muted-foreground">
-            Data from <code className="rounded bg-muted px-1">GET /api/admin/users</code>.
+            Manage registered patient accounts and review historical scan activity.
           </p>
         </div>
         <Input

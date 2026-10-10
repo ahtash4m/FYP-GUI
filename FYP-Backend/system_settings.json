@@ -1,0 +1,6 @@
+{
+  "enableNewRegistrations": true,
+  "defaultLanguage": "English",
+  "modelVersion": "MobileNetV2 (8-Class Ultimate)",
+  "confidenceThresholdPercent": 60
+}

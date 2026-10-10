@@ -129,11 +129,19 @@ export async function saveSystemSettings(
   return patchJson<SystemSettings>("/api/admin/settings", patch)
 }
 
-/** GET /api/admin/backup — returns URL or triggers download per backend design. */
+/** GET /api/admin/backup — triggers full database backup generation and file download. */
 export async function requestBackupDownload(): Promise<void> {
   if (useMockApi()) {
     await delay(400)
     return
   }
-  await getJson<unknown>("/api/admin/backup")
+  const res = await getJson<{ downloadUrl?: string; message?: string }>("/api/admin/backup")
+  if (res?.downloadUrl) {
+    const a = document.createElement("a")
+    a.href = res.downloadUrl
+    a.setAttribute("download", "")
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  }
 }

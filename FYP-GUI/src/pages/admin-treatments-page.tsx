@@ -79,7 +79,7 @@ export function AdminTreatmentsPage() {
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: ["admin", "treatments"] })
       setOpen(false)
-      toast.success("Saved (mock or API)")
+      toast.success("Treatment protocol saved successfully")
     },
     onError: (e) =>
       toast.error(e instanceof Error ? e.message : "Save failed"),
@@ -89,7 +89,7 @@ export function AdminTreatmentsPage() {
     mutationFn: deleteTreatmentRule,
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: ["admin", "treatments"] })
-      toast.success("Deleted")
+      toast.success("Treatment protocol deleted")
     },
   })
 
@@ -99,8 +99,7 @@ export function AdminTreatmentsPage() {
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Treatment Database</h1>
           <p className="text-sm text-muted-foreground">
-            Maps AI labels to OTC copy via{" "}
-            <code className="rounded bg-muted px-1">/api/admin/treatments</code>.
+            Configure clinical OTC routines dynamically mapped to AI predicted skin classes.
           </p>
         </div>
         <Button onClick={openCreate}>

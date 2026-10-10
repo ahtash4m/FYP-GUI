@@ -1,0 +1,384 @@
+{
+  "timestamp": "2026-10-10T15:56:42.738467Z",
+  "database": "acne_fyp_db",
+  "tables": {
+    "users": [
+      {
+        "user_id": 1,
+        "email": "test@tmail.com",
+        "role": "Patient"
+      },
+      {
+        "user_id": 2,
+        "email": "admin@test.com",
+        "role": "admin"
+      },
+      {
+        "user_id": 3,
+        "email": "test@test.com",
+        "role": "Patient"
+      },
+      {
+        "user_id": 4,
+        "email": "testingonly@e.com",
+        "role": "patient"
+      }
+    ],
+    "treatment_plans": [
+      {
+        "plan_id": 1,
+        "acne_type": "acne-closed-comedo",
+        "severity": "Mild",
+        "recommended_treatment": "Wash daily with a gentle Salicylic Acid (BHA) cleanser to unclog pores. Apply a topical retinoid (like Adapalene gel) at night to speed up cell turnover. Use a lightweight, non-comedogenic moisturizer to prevent the skin from overproducing oil."
+      },
+      {
+        "plan_id": 2,
+        "acne_type": "acne-cystic",
+        "severity": "Severe",
+        "recommended_treatment": "Wash with a hydrating, non-foaming cleanser. Avoid harsh scrubbing which worsens inflammation. Spot treat cysts with a thin layer of 2.5% Benzoyl Peroxide to target deep bacteria. Apply a warm compress for 10 minutes to soothe pain, followed by a barrier-repairing moisturizer."
+      },
+      {
+        "plan_id": 3,
+        "acne_type": "acne-open-comedo",
+        "severity": "Mild",
+        "recommended_treatment": "Use a leave-on 2% Salicylic Acid (BHA) liquid exfoliant to dissolve oil inside the pore. Incorporate a Niacinamide serum to help regulate sebum production and visibly tighten pores. Apply an oil-free gel moisturizer to maintain hydration without clogging pores."
+      },
+      {
+        "plan_id": 4,
+        "acne_type": "acne-pustular",
+        "severity": "Moderate",
+        "recommended_treatment": "Wash your face twice daily with a gentle, non-comedogenic cleanser. Apply hydrocolloid pimple patches over active pustules to safely absorb fluid overnight. Apply a lightweight moisturizer to protect the skin barrier and prevent dryness."
+      },
+      {
+        "plan_id": 5,
+        "acne_type": "hidradenitis-suppurativa",
+        "severity": "Severe",
+        "recommended_treatment": "Wash the affected areas gently with an antibacterial soap. Apply warm compresses to painful nodules to help soothe inflammation. Wear loose-fitting clothing to minimize friction and consult a dermatologist."
+      },
+      {
+        "plan_id": 6,
+        "acne_type": "perioral-dermatitis",
+        "severity": "Moderate",
+        "recommended_treatment": "Stop using all harsh active ingredients, exfoliants, and heavy cosmetics immediately. Wash the area strictly with warm water or an ultra-mild, fragrance-free cleanser. Apply a thin layer of a basic, soothing zinc-based barrier cream and avoid steroid creams."
+      },
+      {
+        "plan_id": 7,
+        "acne_type": "pigmentation",
+        "severity": "Mild",
+        "recommended_treatment": "Wash with a gentle cleanser to prep the skin. Apply a Vitamin C or Alpha Arbutin serum in the morning to actively brighten dark spots. Apply a broad-spectrum SPF 30+ sunscreen every day."
+      },
+      {
+        "plan_id": 8,
+        "acne_type": "rosacea",
+        "severity": "Moderate",
+        "recommended_treatment": "Cleanse with an ultra-gentle, hydrating face wash. Apply an OTC Azelaic Acid serum to help reduce inflammation and diffuse redness. Protect the skin daily with a mineral sunscreen (Zinc Oxide/Titanium Dioxide) to block UV triggers."
+      }
+    ],
+    "scan_history": [
+      {
+        "scan_id": 1,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791465518_final1.png",
+        "predicted_type": "Moderate Papulopustular Acne",
+        "confidence": 88.5,
+        "timestamp": "2026-10-08T13:18:38.090000"
+      },
+      {
+        "scan_id": 2,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791528605_IMG_20261009_111344.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 73.42,
+        "timestamp": "2026-10-09T06:50:08.640000"
+      },
+      {
+        "scan_id": 3,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791528654_istockphoto-1493956084-612x612.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 77.2,
+        "timestamp": "2026-10-09T06:50:56.263000"
+      },
+      {
+        "scan_id": 4,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791528747_images.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 92.55,
+        "timestamp": "2026-10-09T06:52:30.033000"
+      },
+      {
+        "scan_id": 5,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791529340_istockphoto-1493956084-612x612.jpg",
+        "predicted_type": "r",
+        "confidence": 47.85,
+        "timestamp": "2026-10-09T07:02:23.870000"
+      },
+      {
+        "scan_id": 6,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791529355_IMG_20261009_111344.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 59.88,
+        "timestamp": "2026-10-09T07:02:37.950000"
+      },
+      {
+        "scan_id": 7,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791529368_images.jpg",
+        "predicted_type": "oip",
+        "confidence": 40.05,
+        "timestamp": "2026-10-09T07:02:50.117000"
+      },
+      {
+        "scan_id": 8,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791530137_images.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 66.98,
+        "timestamp": "2026-10-09T07:15:40.017000"
+      },
+      {
+        "scan_id": 9,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791530154_istockphoto-1493956084-612x612.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 74.37,
+        "timestamp": "2026-10-09T07:15:56.260000"
+      },
+      {
+        "scan_id": 10,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791539610_istockphoto-1493956084-612x612.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 67.94,
+        "timestamp": "2026-10-09T09:53:33.290000"
+      },
+      {
+        "scan_id": 11,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791539627_images.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 78.22,
+        "timestamp": "2026-10-09T09:53:49.307000"
+      },
+      {
+        "scan_id": 12,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791539653_Gantt.png",
+        "predicted_type": "pigmentation",
+        "confidence": 65.61,
+        "timestamp": "2026-10-09T09:54:15.493000"
+      },
+      {
+        "scan_id": 13,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791539973_images.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 78.22,
+        "timestamp": "2026-10-09T09:59:36.967000"
+      },
+      {
+        "scan_id": 14,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791540774_images.jpg",
+        "predicted_type": "perioral-dermatitis",
+        "confidence": 37.32,
+        "timestamp": "2026-10-09T10:12:57.890000"
+      },
+      {
+        "scan_id": 15,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791540816_images.jpg",
+        "predicted_type": "hidradenitis-suppurativa",
+        "confidence": 33.76,
+        "timestamp": "2026-10-09T10:13:38.027000"
+      },
+      {
+        "scan_id": 16,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791540831_istockphoto-1493956084-612x612.jpg",
+        "predicted_type": "perioral-dermatitis",
+        "confidence": 29.57,
+        "timestamp": "2026-10-09T10:13:53.850000"
+      },
+      {
+        "scan_id": 17,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791541046_IMG_20261009_111344.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 22.94,
+        "timestamp": "2026-10-09T10:17:28.550000"
+      },
+      {
+        "scan_id": 18,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791541272_comaa.jpg",
+        "predicted_type": "hidradenitis-suppurativa",
+        "confidence": 39.71,
+        "timestamp": "2026-10-09T10:21:14.663000"
+      },
+      {
+        "scan_id": 19,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791542631_images_1.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 29.0,
+        "timestamp": "2026-10-09T10:43:53.490000"
+      },
+      {
+        "scan_id": 20,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791561152_wh.jpg",
+        "predicted_type": "perioral-dermatitis",
+        "confidence": 24.94,
+        "timestamp": "2026-10-09T15:52:35.400000"
+      },
+      {
+        "scan_id": 21,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791562373_wh.jpg",
+        "predicted_type": "acne-pustular",
+        "confidence": 28.92,
+        "timestamp": "2026-10-09T16:12:56.740000"
+      },
+      {
+        "scan_id": 22,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791562407_istockphoto-1493956084-612x612.jpg",
+        "predicted_type": "acne-cystic",
+        "confidence": 35.61,
+        "timestamp": "2026-10-09T16:13:30.190000"
+      },
+      {
+        "scan_id": 23,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791562439_images.jpg",
+        "predicted_type": "acne-pustular",
+        "confidence": 25.72,
+        "timestamp": "2026-10-09T16:14:01.233000"
+      },
+      {
+        "scan_id": 24,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791564847_wh.jpg",
+        "predicted_type": "acne-closed-comedo",
+        "confidence": 38.63,
+        "timestamp": "2026-10-09T16:54:10.343000"
+      },
+      {
+        "scan_id": 25,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791564972_images_1.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 45.45,
+        "timestamp": "2026-10-09T16:56:14.703000"
+      },
+      {
+        "scan_id": 26,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791564988_images.jpg",
+        "predicted_type": "acne-pustular",
+        "confidence": 33.3,
+        "timestamp": "2026-10-09T16:56:31.063000"
+      },
+      {
+        "scan_id": 27,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791565004_istockphoto-1493956084-612x612.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 42.32,
+        "timestamp": "2026-10-09T16:56:46.370000"
+      },
+      {
+        "scan_id": 28,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791565289_IMG_20261009_111344.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 67.61,
+        "timestamp": "2026-10-09T17:01:31.230000"
+      },
+      {
+        "scan_id": 29,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791566913_images_2.jpg",
+        "predicted_type": "acne-pustular",
+        "confidence": 55.82,
+        "timestamp": "2026-10-09T17:28:35.317000"
+      },
+      {
+        "scan_id": 30,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791567130_wh.jpg",
+        "predicted_type": "acne-closed-comedo",
+        "confidence": 38.63,
+        "timestamp": "2026-10-09T17:32:13.050000"
+      },
+      {
+        "scan_id": 31,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791567171_images_2.jpg",
+        "predicted_type": "acne-pustular",
+        "confidence": 55.82,
+        "timestamp": "2026-10-09T17:32:53.303000"
+      },
+      {
+        "scan_id": 32,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791570983_cropped_acne_scan.jpg",
+        "predicted_type": "pigmentation",
+        "confidence": 55.2,
+        "timestamp": "2026-10-09T18:36:26.610000"
+      },
+      {
+        "scan_id": 33,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791571043_cropped_acne_scan.jpg",
+        "predicted_type": "acne-cystic",
+        "confidence": 67.02,
+        "timestamp": "2026-10-09T18:37:25.167000"
+      },
+      {
+        "scan_id": 34,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791571207_cropped_acne_scan.jpg",
+        "predicted_type": "acne-closed-comedo",
+        "confidence": 51.38,
+        "timestamp": "2026-10-09T18:40:09.553000"
+      },
+      {
+        "scan_id": 35,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791614482_cropped_acne_scan.jpg",
+        "predicted_type": "acne-cystic",
+        "confidence": 44.12,
+        "timestamp": "2026-10-10T06:41:23.737000"
+      },
+      {
+        "scan_id": 36,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791614617_cropped_acne_scan.jpg",
+        "predicted_type": "acne-cystic",
+        "confidence": 41.47,
+        "timestamp": "2026-10-10T06:43:40.240000"
+      },
+      {
+        "scan_id": 37,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791616001_cropped_acne_scan.jpg",
+        "predicted_type": "acne-closed-comedo",
+        "confidence": 51.38,
+        "timestamp": "2026-10-10T07:06:44.333000"
+      },
+      {
+        "scan_id": 38,
+        "user_id": 3,
+        "image_url": "http://127.0.0.1:5000/static/uploads/1791616628_cropped_acne_scan.jpg",
+        "predicted_type": "acne-closed-comedo",
+        "confidence": 51.38,
+        "timestamp": "2026-10-10T07:17:11.770000"
+      }
+    ]
+  }
+}

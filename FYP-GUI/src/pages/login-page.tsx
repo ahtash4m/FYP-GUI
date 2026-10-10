@@ -42,9 +42,9 @@ export function LoginPage() {
   async function quickAdmin() {
     setBusy(true)
     try {
-      await login("admin@demo.local", "password", "admin")
+      await login("admin@test.com", "admin123", "admin")
       navigate("/admin/overview", { replace: true })
-      toast.success("Signed in as admin (mock)")
+      toast.success("Signed in as admin")
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Login failed")
     } finally {
@@ -58,9 +58,7 @@ export function LoginPage() {
         <CardHeader>
           <CardTitle>Sign in</CardTitle>
           <CardDescription>
-            Use any email/password with mocks. Emails containing{" "}
-            <span className="font-medium text-foreground">admin</span> route to
-            the admin console.
+            Enter your email and password to access your account or the administrator console.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -99,7 +97,7 @@ export function LoginPage() {
               disabled={busy}
               onClick={quickAdmin}
             >
-              Admin demo (mock)
+              Sign in as Admin
             </Button>
             <p className="text-center text-sm text-muted-foreground">
               No account?{" "}

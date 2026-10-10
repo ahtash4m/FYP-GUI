@@ -46,7 +46,7 @@ export function AdminSettingsPage() {
     mutationFn: () => saveSystemSettings(draft),
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: ["admin", "settings"] })
-      toast.success("Settings saved (mock or API)")
+      toast.success("Settings saved successfully")
     },
     onError: (e) =>
       toast.error(e instanceof Error ? e.message : "Save failed"),
@@ -54,7 +54,7 @@ export function AdminSettingsPage() {
 
   const backup = useMutation({
     mutationFn: requestBackupDownload,
-    onSuccess: () => toast.message("Backup request acknowledged (mock)"),
+    onSuccess: () => toast.success("Database backup generated successfully"),
     onError: (e) =>
       toast.error(e instanceof Error ? e.message : "Backup failed"),
   })
@@ -64,8 +64,7 @@ export function AdminSettingsPage() {
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
         <p className="text-sm text-muted-foreground">
-          Persists via <code className="rounded bg-muted px-1">PATCH /api/admin/settings</code>{" "}
-          when integrated.
+          Global configuration for user registrations, clinical confidence thresholds, and backups.
         </p>
       </div>
 
