@@ -29,6 +29,15 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+class TreatmentPlan(db.Model):
+    __tablename__ = 'Treatment_Plans'
+    __table_args__ = {'schema': 'dbo'}
+
+    plan_id = db.Column(db.Integer, primary_key=True)
+    acne_type = db.Column(db.String(50), nullable=False)
+    severity = db.Column(db.String(50), nullable=False)
+    recommended_treatment = db.Column(db.Text, nullable=False) # -1 length indicates varchar(max)
+
 app.config['JWT_SECRET_KEY'] = 'your-super-secret-fyp-key-change-later' # Keep this safe!
 jwt = JWTManager(app)
 
@@ -361,26 +370,34 @@ def process_scan():
     db.session.add(new_scan)
     db.session.commit()
     
-    # Fetch the dynamic recommendations based on the AI's label
-    # If a label somehow isn't found, fallback to a safe, generic routine
-    default_rec = {
-        "description": "Condition classified. Maintain a consistent, gentle skincare routine.",
-        "steps": [
+    # Fetch the treatment plan directly from SQL Server
+    plan = TreatmentPlan.query.filter_by(acne_type=predicted_label).first()
+
+    if plan:
+        # Parse the block of text into distinct steps by splitting at periods or newlines
+        raw_sentences = plan.recommended_treatment.replace('\n', '.').split('.')
+        otc_steps = [
+            {"rank": idx + 1, "label": sentence.strip() + "."}
+            for idx, sentence in enumerate(raw_sentences) if sentence.strip()
+        ]
+        
+        description = f"Severity: {plan.severity}. (Confidence: {confidence_val}%)"
+    else:
+        # Fallback if the AI classifies a type not yet in the database
+        description = f"Condition classified as {predicted_label}. Maintain a consistent, gentle skincare routine. (Confidence: {confidence_val}%)"
+        otc_steps = [
             {"rank": 1, "label": "Wash face twice daily with a mild cleanser."},
             {"rank": 2, "label": "Apply an oil-free moisturizer."},
             {"rank": 3, "label": "Use SPF 30+ sunscreen during the day."}
         ]
-    }
-    
-    routine_data = OTC_RECOMMENDATIONS.get(predicted_label, default_rec)
 
     return jsonify({
         "scanId": str(new_scan.scan_id),
         "predictedLabel": predicted_label,
         "confidencePercent": confidence_val,
-        "description": f"{routine_data['description']} (Confidence: {confidence_val}%)",
+        "description": description,
         "imageUrl": image_url,
-        "otcSteps": routine_data['steps']
+        "otcSteps": otc_steps
     }), 201
 
 @app.route('/api/scans', methods=['GET'])
