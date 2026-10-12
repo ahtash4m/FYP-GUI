@@ -56,74 +56,6 @@ CLASS_LABELS = {
     7: 'rosacea'
 }
 
-
-OTC_RECOMMENDATIONS = {
-    'acne-closed-comedo': {
-        "description": "The AI detected closed comedones (whiteheads). Consistent chemical exfoliation is key to clearing trapped sebum beneath the skin surface.",
-        "steps": [
-            {"rank": 1, "label": "Wash daily with a gentle Salicylic Acid (BHA) cleanser to unclog pores."},
-            {"rank": 2, "label": "Apply a topical retinoid (like Adapalene gel) at night to speed up cell turnover."},
-            {"rank": 3, "label": "Use a lightweight, non-comedogenic moisturizer to prevent the skin from overproducing oil."}
-        ]
-    },
-    'acne-cystic': {
-        "description": "The AI detected cystic acne, characterized by deep, inflamed bumps. This requires gentle care to avoid scarring, and a dermatologist visit is highly recommended.",
-        "steps": [
-            {"rank": 1, "label": "Wash with a hydrating, non-foaming cleanser. Avoid harsh scrubbing which worsens inflammation."},
-            {"rank": 2, "label": "Spot treat cysts with a thin layer of 2.5% Benzoyl Peroxide to target deep bacteria."},
-            {"rank": 3, "label": "Apply a warm compress for 10 minutes to soothe pain, followed by a barrier-repairing moisturizer."}
-        ]
-    },
-    'acne-open-comedo': {
-        "description": "The AI detected open comedones (blackheads). These occur when oxidized sebum and dead skin cells stretch the pores.",
-        "steps": [
-            {"rank": 1, "label": "Use a leave-on 2% Salicylic Acid (BHA) liquid exfoliant to dissolve oil inside the pore."},
-            {"rank": 2, "label": "Incorporate a Niacinamide serum to help regulate sebum production and visibly tighten pores."},
-            {"rank": 3, "label": "Apply an oil-free gel moisturizer to maintain hydration without clogging pores."}
-        ]
-    },
-    'acne-pustular': {
-        "description": "The AI detected pustular acne, presenting as inflamed bumps with visible pus. The focus should be on reducing inflammation and extracting impurities safely.",
-        "steps": [
-            {"rank": 1, "label": "Wash your face twice daily with a gentle, non-comedogenic cleanser."},
-            {"rank": 2, "label": "Apply hydrocolloid pimple patches over active pustules to safely absorb fluid overnight."},
-            {"rank": 3, "label": "Apply a lightweight moisturizer to protect the skin barrier and prevent dryness."}
-        ]
-    },
-    'hidradenitis-suppurativa': {
-        "description": "The AI detected visual signs associated with Hidradenitis Suppurativa. This is a chronic inflammatory condition that requires professional medical treatment.",
-        "steps": [
-            {"rank": 1, "label": "Wash the affected areas gently with an antibacterial soap (like chlorhexidine or benzoyl peroxide wash)."},
-            {"rank": 2, "label": "Apply warm compresses to painful nodules to help soothe inflammation."},
-            {"rank": 3, "label": "Wear loose-fitting clothing to minimize friction. Consult a dermatologist immediately for prescription management."}
-        ]
-    },
-    'perioral-dermatitis': {
-        "description": "The AI detected perioral dermatitis, an inflammatory rash typically around the mouth. Less is more when treating this condition.",
-        "steps": [
-            {"rank": 1, "label": "Stop using all harsh active ingredients, exfoliants, and heavy cosmetics immediately."},
-            {"rank": 2, "label": "Wash the area strictly with warm water or an ultra-mild, fragrance-free cleanser."},
-            {"rank": 3, "label": "Apply a thin layer of a basic, soothing zinc-based barrier cream. Avoid all steroid creams."}
-        ]
-    },
-    'pigmentation': {
-        "description": "The AI detected post-inflammatory hyperpigmentation or dark spots left behind by healed acne.",
-        "steps": [
-            {"rank": 1, "label": "Wash with a gentle cleanser to prep the skin."},
-            {"rank": 2, "label": "Apply a Vitamin C or Alpha Arbutin serum in the morning to actively brighten dark spots."},
-            {"rank": 3, "label": "Apply a broad-spectrum SPF 30+ sunscreen every day. UV exposure darkens existing pigmentation."}
-        ]
-    },
-    'rosacea': {
-        "description": "The AI detected rosacea, characterized by facial redness and visible blood vessels. The goal is to calm the skin and avoid known triggers.",
-        "steps": [
-            {"rank": 1, "label": "Cleanse with an ultra-gentle, hydrating face wash. Avoid hot water, which increases redness."},
-            {"rank": 2, "label": "Apply an OTC Azelaic Acid serum to help reduce inflammation and diffuse redness."},
-            {"rank": 3, "label": "Protect the skin daily with a mineral sunscreen (Zinc Oxide/Titanium Dioxide) to block UV triggers."}
-        ]
-    }
-}
-
 # --- UPLOAD CONFIGURATION ---
 UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -159,7 +91,7 @@ class TreatmentPlan(db.Model):
     severity = db.Column(db.String(50), nullable=False)
     recommended_treatment = db.Column(db.Text, nullable=False)
 
-def get_treatment_protocol(predicted_label, confidence_val):
+def get_treatment_protocol(predicted_label, confidence_val=None):
     """Fetches mapped clinical treatment protocol from SQL Server and formats OTC steps."""
     plan = TreatmentPlan.query.filter_by(acne_type=predicted_label).first()
     if plan:
@@ -168,9 +100,9 @@ def get_treatment_protocol(predicted_label, confidence_val):
             {"rank": idx + 1, "label": sentence.strip() + "."}
             for idx, sentence in enumerate(raw_sentences) if sentence.strip()
         ]
-        description = f"Severity: {plan.severity}. (Confidence: {confidence_val}%)"
+        description = f"Severity: {plan.severity}."
     else:
-        description = f"Condition classified as {predicted_label}. Maintain a consistent, gentle skincare routine. (Confidence: {confidence_val}%)"
+        description = f"Condition classified as {predicted_label}. Maintain a consistent, gentle skincare routine."
         otc_steps = [
             {"rank": 1, "label": "Wash face twice daily with a mild cleanser."},
             {"rank": 2, "label": "Apply an oil-free moisturizer."},
@@ -585,7 +517,6 @@ def process_scan():
     return jsonify({
         "scanId": str(new_scan.scan_id),
         "predictedLabel": predicted_label,
-        "confidencePercent": confidence_val,
         "description": description,
         "imageUrl": image_url,
         "otcSteps": otc_steps
@@ -602,8 +533,7 @@ def get_scan_history():
     result = [{
         "scanId": str(s.scan_id),
         "createdAt": s.timestamp.isoformat() + "Z",
-        "predictedLabel": s.predicted_type,
-        "confidencePercent": float(s.confidence)
+        "predictedLabel": s.predicted_type
     } for s in scans]
     
     return jsonify(result), 200
@@ -622,7 +552,6 @@ def get_single_scan(scan_id):
     return jsonify({
         "scanId": str(scan.scan_id),
         "predictedLabel": scan.predicted_type,
-        "confidencePercent": confidence_val,
         "description": description,
         "imageUrl": scan.image_url,
         "otcSteps": otc_steps 

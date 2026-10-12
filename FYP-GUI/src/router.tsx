@@ -1,4 +1,5 @@
 import { AdminShell } from "@/components/layout/admin-shell"
+import { Brand } from "@/components/layout/brand"
 import { PatientShell } from "@/components/layout/patient-shell"
 import { AdminOverviewPage } from "@/pages/admin-overview-page"
 import { AdminSettingsPage } from "@/pages/admin-settings-page"
@@ -24,8 +25,12 @@ function RootRedirect() {
   const { user, hydrated } = useAuth()
   if (!hydrated) {
     return (
-      <div className="flex min-h-svh items-center justify-center text-sm text-muted-foreground">
-        Loading…
+      <div className="flex min-h-svh flex-col items-center justify-center gap-4 bg-slate-50 dark:bg-slate-950">
+        <Brand size="lg" />
+        <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-teal-600 border-t-transparent" />
+          <span>Starting Cura Clinical Triage…</span>
+        </div>
       </div>
     )
   }

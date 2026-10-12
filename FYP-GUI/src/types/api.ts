@@ -23,7 +23,7 @@ export interface TreatmentStep {
 export interface ScanResult {
   scanId: string
   predictedLabel: string
-  confidencePercent: number
+  confidencePercent?: number
   description: string
   otcSteps: TreatmentStep[]
   imageUrl: string
@@ -35,7 +35,7 @@ export interface ScanListItem {
   scanId: string
   createdAt: string
   predictedLabel: string
-  confidencePercent: number
+  confidencePercent?: number
 }
 
 export interface AdminUserRow {

@@ -1,13 +1,17 @@
-import { Sparkles } from "lucide-react"
+import { CuraLogo } from "@/components/layout/cura-logo"
 import { cn } from "@/lib/utils"
 
-export function Brand({ className }: { className?: string }) {
+interface BrandProps {
+  className?: string
+  iconOnly?: boolean
+  size?: "sm" | "md" | "lg" | "xl"
+  light?: boolean
+}
+
+export function Brand({ className, iconOnly, size = "md", light }: BrandProps) {
   return (
-    <div className={cn("flex items-center gap-2 font-semibold tracking-tight", className)}>
-      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-        <Sparkles className="h-5 w-5" aria-hidden />
-      </div>
-      <span>Acne Classification</span>
+    <div className={cn("flex items-center", className)}>
+      <CuraLogo iconOnly={iconOnly} size={size} light={light} />
     </div>
   )
 }

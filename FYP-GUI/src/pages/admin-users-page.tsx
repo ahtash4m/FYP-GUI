@@ -1,3 +1,5 @@
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -11,7 +13,7 @@ import {
 } from "@/components/ui/table"
 import { deleteAdminUser, listAdminUsers } from "@/features/admin/admin.api"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Eye, Trash2 } from "lucide-react"
+import { Calendar, Mail, Search, Trash2, Users } from "lucide-react"
 import { useMemo, useState } from "react"
 import { toast } from "sonner"
 
@@ -36,87 +38,131 @@ export function AdminUsersPage() {
     mutationFn: deleteAdminUser,
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: ["admin", "users"] })
-      toast.success("User deleted successfully")
+      toast.success("User and associated scan history deleted successfully")
     },
     onError: (e) =>
       toast.error(e instanceof Error ? e.message : "Delete failed"),
   })
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-4">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">User Management</h1>
-          <p className="text-sm text-muted-foreground">
-            Manage registered patient accounts and review historical scan activity.
+    <div className="mx-auto flex max-w-6xl flex-col gap-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              User Management
+            </h1>
+            <Badge
+              variant="secondary"
+              className="rounded-full bg-teal-100 text-teal-800 dark:bg-teal-950 dark:text-teal-300 font-semibold"
+            >
+              {users.data?.length ?? 0} Accounts
+            </Badge>
+          </div>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            Registered patients and administrators in MS SQL Server.
           </p>
         </div>
-        <Input
-          className="max-w-xs"
-          placeholder="Search…"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-        />
+
+        <div className="relative w-full sm:w-72">
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+          <Input
+            className="pl-9 h-10 rounded-xl border-slate-200 text-xs focus-visible:ring-teal-600 dark:border-slate-800"
+            placeholder="Search by name, email, or ID..."
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+          />
+        </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Registered Users</CardTitle>
+      <Card className="rounded-2xl border-slate-200/90 shadow-sm dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
+        <CardHeader className="border-b border-slate-100 dark:border-slate-800 py-4 px-6 flex flex-row items-center justify-between">
+          <CardTitle className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <Users className="h-4 w-4 text-teal-600" />
+            Active User Records
+          </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>User ID</TableHead>
-                <TableHead>Full Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Registration Date</TableHead>
-                <TableHead>Total Scans</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+            <TableHeader className="bg-slate-50/70 dark:bg-slate-800/50">
+              <TableRow className="border-b border-slate-100 dark:border-slate-800">
+                <TableHead className="font-semibold text-xs text-slate-600 dark:text-slate-300 py-3 pl-6">
+                  User
+                </TableHead>
+                <TableHead className="font-semibold text-xs text-slate-600 dark:text-slate-300 py-3">
+                  Email
+                </TableHead>
+                <TableHead className="font-semibold text-xs text-slate-600 dark:text-slate-300 py-3">
+                  Registered On
+                </TableHead>
+                <TableHead className="font-semibold text-xs text-slate-600 dark:text-slate-300 py-3 text-center">
+                  Total Scans
+                </TableHead>
+                <TableHead className="font-semibold text-xs text-slate-600 dark:text-slate-300 py-3 text-right pr-6">
+                  Actions
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filtered.map((u) => (
-                <TableRow key={u.userId}>
-                  <TableCell className="font-mono text-xs">{u.userId}</TableCell>
-                  <TableCell>{u.fullName}</TableCell>
-                  <TableCell>{u.email}</TableCell>
-                  <TableCell>{u.registrationDate}</TableCell>
-                  <TableCell>{u.totalScans}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button size="icon" variant="default" type="button" disabled title="Wire to detail drawer">
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        size="icon"
-                        variant="destructive"
-                        type="button"
-                        onClick={() => del.mutate(u.userId)}
-                        disabled={del.isPending}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                <TableRow
+                  key={u.userId}
+                  className="border-b border-slate-100/80 hover:bg-teal-50/30 dark:border-slate-800/60 transition-colors text-xs"
+                >
+                  <TableCell className="py-3.5 pl-6 font-medium text-slate-900 dark:text-white">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-8 w-8 border border-slate-200 dark:border-slate-700">
+                        <AvatarFallback className="bg-slate-100 text-slate-700 text-xs font-semibold">
+                          {u.fullName.slice(0, 2).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <span className="font-semibold text-slate-900 dark:text-white">
+                          {u.fullName}
+                        </span>
+                        <span className="font-mono text-[10px] text-slate-400">
+                          ID: {u.userId}
+                        </span>
+                      </div>
                     </div>
+                  </TableCell>
+                  <TableCell className="py-3.5 text-slate-600 dark:text-slate-300">
+                    <span className="flex items-center gap-1.5">
+                      <Mail className="h-3 w-3 text-slate-400" />
+                      {u.email}
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-3.5 text-slate-500 dark:text-slate-400">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar className="h-3 w-3 text-slate-400" />
+                      {u.registrationDate}
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-3.5 text-center">
+                    <Badge variant="outline" className="font-mono text-xs px-2">
+                      {u.totalScans}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right py-3.5 pr-6">
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="h-8 w-8 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/20"
+                      type="button"
+                      onClick={() => {
+                        if (confirm(`Permanently delete user ${u.fullName} and their scan history?`)) {
+                          del.mutate(u.userId)
+                        }
+                      }}
+                      disabled={del.isPending}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-          <div className="mt-4 flex justify-end gap-2 text-sm">
-            <Button variant="outline" size="sm" type="button" disabled>
-              Previous
-            </Button>
-            <Button size="sm" type="button" disabled>
-              1
-            </Button>
-            <Button variant="outline" size="sm" type="button" disabled>
-              Next
-            </Button>
-            <span className="self-center text-xs text-muted-foreground">
-              Pagination placeholders
-            </span>
-          </div>
         </CardContent>
       </Card>
     </div>
